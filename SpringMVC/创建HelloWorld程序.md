@@ -76,7 +76,7 @@ applicationContext中指定了所有.htm结尾的访问都使用springMVC来进�
 
 所有文件添加完成后项目目录截图如下所示：
 
-![]()
+![](https://github.com/VitasYuan/Blog/blob/master/pictures/springmvc-1-2.png)
 
 # 7.测试
 在tomcat中启动此项目后，在浏览器中输入：
