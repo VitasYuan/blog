@@ -5,9 +5,7 @@
         vim  /Users/yuanweipeng/.m2/settings.xml
 
 2. 在配置文件中添加如下配置：
-
-
-    <mirrors>
+       <mirrors>
         <mirror>
           <id>alimaven</id>
           <name>aliyun maven</name>
@@ -15,4 +13,5 @@
           <mirrorOf>central</mirrorOf>        
         </mirror>
       </mirrors>
+      
 输入：wq保存即可
