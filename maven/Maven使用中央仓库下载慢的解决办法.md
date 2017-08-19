@@ -6,6 +6,7 @@
 
 2. 在配置文件中添加如下配置：
 
+<<<<<<< HEAD
 
 	    <mirrors>
 	        <mirror>
@@ -17,3 +18,15 @@
 	     </mirrors>
 
 输入：wq保存即可
+=======
+       <mirrors>
+        <mirror>
+          <id>alimaven</id>
+          <name>aliyun maven</name>
+          <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+          <mirrorOf>central</mirrorOf>        
+        </mirror>
+       </mirrors>
+      
+输入：wq保存即可
+>>>>>>> e8d131658d55b7b22d03edb2dde925433b6726e7
