@@ -7,9 +7,12 @@
 ## 2、配置环境变量
 1. 打开terminel输入以下命令：
 
-  `vim ~/.bash_profile` 打开.bash_profile文件，在次文件中添加设置环境变量的命令   
-    ` export M2_HOME=/Users/yuanweipeng/Documents/maven/apache-maven-3.5.0`  
-   `export PATH=$PATH:$M2_HOME/bin`  
+  	`vim ~/.bash_profile` 
+  	
+  打开.bash_profile文件，在次文件中添加设置环境变量的命令
+
+	` export M2_HOME=/Users/yuanweipeng/Documents/maven/apache-maven-3.5.0`  
+	`export PATH=$PATH:$M2_HOME/bin`  
 
 添加之后保存并推出，执行以下命令使配置生效：  
 
