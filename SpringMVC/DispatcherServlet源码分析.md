@@ -3,3 +3,5 @@
   ![]()
 
 ## 2.DispatcherServlet类的继承结构和分析
+DispatcherServlet类的继承结构图如下所示：
+![](https://github.com/VitasYuan/Blog/blob/master/pictures/dispatchersrc-1-1.png)  
