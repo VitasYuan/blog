@@ -30,7 +30,7 @@
 
     private transient ServletConfig config;
 
-添加transient修饰的作用：
+添加transient修饰的作用：序列化的时候不包含此字段
 
   此局部变量在init的时候初始化，初始化方式如下：
 
