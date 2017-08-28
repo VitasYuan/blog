@@ -8,6 +8,17 @@
 #### 2.线程间的竞争造成的线程安全问题
 假如我们多个线程访问共享变量obj.count,并对此变量进行+1的操作，当我们不对共享变量进行同步控制的时候可能会出现以下情况：
 ![](https://github.com/VitasYuan/Blog/blob/master/pictures/jvm1-1-3.png)
-两个线程同时读取了jvm内存中的变量obj.count，然后对此变量+1操作，然后将计算结果写入到jvm内存，最终得到的obj.count=2，然而我们期望得到的结果是3.要解决这个问题，我们可以使用synchronized关键字对累加操作加锁，保证此操作同一个时间只有一个线程执行。
+两个线程同时读取了jvm内存中的变量obj.count，然后对此变量+1操作，然后将计算结果写入到jvm内存，最终得到的obj.count=2，然而我们期望得到的结果是3.要解决这个问题，我们可以使用synchronized关键字对累加操作加锁，保证此操作同一个时间只有一个线程执行。如下代码所示：
+
+    private static final Object LOCK = new Object();
+
+      private static int count = 1;
+
+
+      public static void increase(String [] args){
+         synchronized (LOCK){
+             count = count + 1;
+         }
+      }
 
 ## 2.使用volatile关键字来解决线程间变量不可见的问题

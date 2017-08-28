@@ -16,7 +16,7 @@
 
 [3.volatile关键字](https://github.com/VitasYuan/Blog/blob/master/concurrentPackage/Volatile%E5%85%B3%E9%94%AE%E5%AD%97.md)
 
-[4.Autom相关类分析](https://github.com/VitasYuan/Blog/blob/master/concurrentPackage/Autom%E7%9B%B8%E5%85%B3%E7%B1%BB%E5%88%86%E6%9E%90)
+[4.Atomic相关类分析](https://github.com/VitasYuan/Blog/blob/master/concurrentPackage/Autom%E7%9B%B8%E5%85%B3%E7%B1%BB%E5%88%86%E6%9E%90)
 
 [5.Lock相关类源码分析](https://github.com/VitasYuan/Blog/blob/master/concurrentPackage/Lock%E7%9B%B8%E5%85%B3%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90)
 
