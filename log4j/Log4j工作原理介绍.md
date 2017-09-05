@@ -1,6 +1,6 @@
 ## 1.log4j工作流程图
 log4j主要有Logger，Layout和Appender三个核心模块。Logger模块负责收集日志数据，然后通过Layout模块将数据格式化，最终由Appender模块将日志数据输出到不同的目的地，如数据库、控制台或者文件。工作流程图如下所示：
-![]()
+![](https://github.com/VitasYuan/Blog/blob/master/pictures/log4j-1-1.png)
 
 ## 2.配置方式
 log4j支持xml和properties文件两种配置方式，下面以properties文件的方式介绍log4j的配置。
