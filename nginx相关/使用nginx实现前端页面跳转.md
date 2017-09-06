@@ -67,6 +67,6 @@
 
 通过此配置文件可以看到，nginx监听端口为8080，首页为index.html
 在浏览器中输入localhost:8080可以看到如下页面，则说明，nginx已经正确安装并启动。
-![]()
+![](https://github.com/VitasYuan/Blog/blob/master/pictures/nginx-1-7.png)
 通过修改location中的配置为我们前端工程的目录，即可通过nginx来访问前端页面。
 TODO：前端工程配置测试待添加....
