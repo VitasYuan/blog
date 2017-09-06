@@ -51,4 +51,22 @@
 进入nginx目录：输入nginx -s reload命令即可重启，如下图所示：
 ![](https://github.com/VitasYuan/Blog/blob/master/pictures/nginx-1-6.png)
 
-## 4.nginx相关配置
+## 4.nginx配置
+使用brew安装nginx后默认的配置文件在：
+
+    /usr/local/etc/nginx
+切换到此目录，使用vim nginx.conf命令，可以看到默认的配置如下：  
+
+    server {
+      listen       8080;
+      server_name  localhost;
+      location / {
+         root   html;
+         index  index.html index.htm;
+      }
+
+通过此配置文件可以看到，nginx监听端口为8080，首页为index.html
+在浏览器中输入localhost:8080可以看到如下页面，则说明，nginx已经正确安装并启动。
+![]()
+通过修改location中的配置为我们前端工程的目录，即可通过nginx来访问前端页面。
+TODO：前端工程配置测试待添加....
