@@ -3,7 +3,7 @@ Spring框架提供了线程池和定时任务执行的抽象接口：TaskExecuto
 另外Spring还支持集成JDK内部的定时器Timer和Quartz Scheduler框架。
 ## 2.线程池的抽象：TaskExecutor
 TaskExecutor涉及到的相关类图如下：  
-![]()
+![](https://github.com/VitasYuan/Blog/blob/master/pictures/spring-1-1.png)
 TaskExecutor接口源代码如下所示：  
 
     public interface TaskExecutor extends Executor {
