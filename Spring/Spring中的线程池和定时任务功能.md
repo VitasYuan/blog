@@ -1,7 +1,9 @@
 ## 1.功能介绍
 Spring框架提供了线程池和定时任务执行的抽象接口：TaskExecutor和TaskScheduler来支持异步执行任务和定时执行任务功能。同时使用框架自己定义的抽象接口来屏蔽掉底层JDK版本间以及Java EE中的线程池和定时任务处理的差异。  
-另外Spring还支持集成JDk内部的定时器Timer和Quartz Scheduler框架。
+另外Spring还支持集成JDK内部的定时器Timer和Quartz Scheduler框架。
 ## 2.线程池的抽象：TaskExecutor
+TaskExecutor涉及到的相关类图如下：  
+![]()
 TaskExecutor接口源代码如下所示：  
 
     public interface TaskExecutor extends Executor {
@@ -110,3 +112,125 @@ ThreadPoolTaskExecutor，此实现可以通过属性注入来配置线程池的�
 3.使用线程池可以控制任务的最大并发数目，这个在防止内存溢出以及并发优化方面有很重要的作用。
 
 ## 6.定时任务抽象类：TaskScheduler
+
+TaskScheduler接口源代码如下：  
+
+    public interface TaskScheduler {
+      //通过触发器来决定task是否执行
+    ScheduledFuture schedule(Runnable task, Trigger trigger);
+    //在starttime的时候执行一次
+    ScheduledFuture schedule(Runnable task, Date startTime);
+    从starttime开始每个period时间段执行一次task
+    ScheduledFuture scheduleAtFixedRate(Runnable task, Date startTime, long period);
+    每隔period执行一次
+    ScheduledFuture scheduleAtFixedRate(Runnable task, long period);
+    从startTime开始每隔delay长时间执行一次
+    ScheduledFuture scheduleWithFixedDelay(Runnable task, Date startTime, long delay);
+    每隔delay时间执行一次
+    ScheduledFuture scheduleWithFixedDelay(Runnable task, long delay);
+
+}
+
+指定开始时间的接口，如果时间已经是过去的某一时间点，则此任务会马上执行一次。以上几种执行方式传入Trigger的方式是用的最多的，Trigger接口中只定义了一个方法：  
+
+    Date nextExecutionTime(TriggerContext triggerContext);
+其中参数类型TriggerContext的定义如下：
+
+    public interface TriggerContext {
+
+  	/**
+  	 * Return the last <i>scheduled</i> execution time of the task,
+  	 * or {@code null} if not scheduled before.
+  	 */
+  	Date lastScheduledExecutionTime();
+
+  	/**
+  	 * Return the last <i>actual</i> execution time of the task,
+  	 * or {@code null} if not scheduled before.
+  	 */
+  	Date lastActualExecutionTime();
+
+  	/**
+  	 * Return the last completion time of the task,
+  	 * or {@code null} if not scheduled before.
+  	 */
+  	Date lastCompletionTime();
+
+    }
+
+提供了获取上一次任务执行信息的接口。我们通过实现Trigger接口可以实现自定义触发器来执行执行task。当然Spring也提供了两个默认的实现类：PeriodicTrigger和CronTrigger。
+
+## 7.TaskScheduler定时任务Demo
+首先在Spring配置文件中启用注解配置如下：
+
+    <task:annotation-driven scheduler="myScheduler"/> //指定scheduler属性是可选项，不添加也可以正常使用
+    <task:scheduler id="myScheduler" pool-size="10"/>
+
+然后创建service，并在service中使用@Scheduled注解创建定时任务，代码如下：
+
+    @Component
+    public class SchedulerPoolTest {
+
+      @Scheduled(cron = "0 * * * * ?")
+      public void task1(){
+          System.out.println("test");
+          Thread thread =  Thread.currentThread();
+          System.out.println("ThreadName:" + thread.getName() + ",id:" + thread.getId() + ",group:" + thread.getThreadGroup());
+
+      }
+
+      @Scheduled(fixedDelay = 5000)
+      public void task2(){
+          System.out.println("test");
+          Thread thread =  Thread.currentThread();
+          System.out.println("ThreadName:" + thread.getName() + ",id:" + thread.getId() + ",group:" + thread.getThreadGroup());
+
+      }
+
+    }
+只是添加以上内容可能还不能正常执行task，还需要注意以下两点：
+
+1.必须将SchedulerPoolTest类包含在spring所扫描的包里面  
+  配置如下：      
+
+    <context:component-scan base-package="com.zjut.task" />
+
+2.需要在web.xml中添加spring配置文件的监听器，代码如下：
+
+    <context-param>
+     <param-name>contextConfigLocation</param-name>
+     <param-value>classpath*:spring-task.xml</param-value>
+     </context-param>
+
+     <listener>
+       <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+     </listener>
+添加以上内容后，启动服务器，将会定时执行任务。
+
+## 8.Cron表达式
+Cron表达式由6个字符串组成，每个字符串分别代表：  
+
+    {秒} {分} {时} {日} {月} {周}
+其中每个字符串所允许的取值范围为：
+
+    字段名                 允许的值                        允许的特殊字符  
+    秒                    0-59                            , - * /  
+    分                    0-59                            , - * /  
+    小时                  0-23                            , - * /  
+    日                    1-31                            , - * ? / L W C  
+    月                    1-12 or JAN-DEC                 , - * /  
+    周几                  1-7 or SUN-SAT                   , - * ? / L C #
+
+常用的Cron表达式：  
+
+    "0 10,44 14 ? 3 WED" 每年三月的星期三的下午2:10和2:44触发
+    "0 0/5 14,18 * * ?" 在每天下午2点到2:55期间和下午6点到6:55期间的每5分钟触发
+    "15-30/5 * * * * ?" 每分钟的15秒到30秒之间开始触发，每隔5秒触发一次
+    "0 15 10 ? * 5#3" 每个月第三周的星期四的10点15分0秒触发任务
+
+注：问号是用于避免日和周的设定由冲突而用的，当其中一个设置了具体的值，另外一个必须使用？。另外推荐一个Cron表达式生成的链接：<a >http://www.cronmaker.com/</a>
+## 9.@Async注解
+Async注解提供了异步调用方法的功能，当调用由此注解的方法的时候方法调用者会马上返回而不会等待调用的方法执行完成，被调用的方法会从线程池中分配一个线程来执行此方法。
+## 10.Spring定时任务中并发执行的问题
+同一个任务，当上一个任务没有执行完成的时候，新的任务不会执行。
+不同任务的情况下：TODO...
