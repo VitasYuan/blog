@@ -41,7 +41,7 @@
 
     http://localhost:8088/average/hour.ajax?startTime=2017-01-01%2012:12:12&&endTime=2017-09-09%2012:12:12
 会得到以下输出：
-![]()
+![](https://github.com/VitasYuan/Blog/blob/master/pictures/springmvc-3-2.png)
 
 ## 2.SpringMVC返回json字符串时对Date类型的格式化
 在使用SpringMVC实现返回json字符串的接口时候，当返回的数据类型由Date类型的时候，需要对这种类型做特殊的转换才能得到我们想要的格式化的时间字符串，实现此功能只需要在Model类中的get方法做简单的处理即可，首先我们需要添加jackson依赖，配置如下：
@@ -76,4 +76,4 @@
         return createdTime;
     }
 其中pattern参数为格式化参数。通过以上配置之后，访问接口后得到的数据如下所示，可以看到createTime格式为时间字符串：
-![]()
+![](https://github.com/VitasYuan/Blog/blob/master/pictures/springMVC-3-3.png)
