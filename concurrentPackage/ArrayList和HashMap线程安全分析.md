@@ -84,3 +84,27 @@ ArrayList内部是使用数组保存元素的，数据定义如下：
 当我们新建一个ArrayList时候，此时内部数组容器的容量为默认容量10，当我们用两个线程同时添加第10个元素的时候，如果出现以下执行顺序，可能会抛出java.lang.ArrayIndexOutOfBoundsException异常。
 ![](https://github.com/VitasYuan/Blog/blob/master/pictures/concurrent-1-8.png)
 第二个线程往数组中添加数据的时候由于数组容量为10，而此操作往index为10的位置设置元素值，因此会抛出数组越界异常。
+### 1.2.3 代码验证数组容量检测的并发问题
+使用如下代码：
+    private static List<Integer> list = new ArrayList<Integer>(3);
+
+        private static ExecutorService executorService = Executors.newFixedThreadPool(10000);
+
+        private static class IncreaseTask extends Thread{
+            @Override
+            public void run() {
+                System.out.println("ThreadId:" + Thread.currentThread().getId() + " start!");
+                for(int i =0; i < 1000000; i++){
+                    list.add(i);
+                }
+                System.out.println("ThreadId:" + Thread.currentThread().getId() + " finished!");
+            }
+        }
+
+        public static void main(String[] args){
+
+            new IncreaseTask().start();
+            new IncreaseTask().start();
+        }
+执行main方法后，我们可以看到控制台输出如下：
+![](https://github.com/VitasYuan/Blog/blob/master/pictures/concurrent-1-9.png)
