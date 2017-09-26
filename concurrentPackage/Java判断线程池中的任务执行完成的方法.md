@@ -94,7 +94,7 @@ isTerminated()方法会返回true否则返回false。以下为demo代码：
 
         }
 执行此方法后输出如下：
-![]()
+![](https://github.com/VitasYuan/Blog/blob/master/pictures/concurrent1-4.png)
 说明：
 ExecutorService中的submit接口说明如下：
 
