@@ -57,3 +57,30 @@ ArrayList内部是使用数组保存元素的，数据定义如下：
 ![]()
 从以上执行结果来看，最后输出的结果会小于我们的期望值。即当多线程调用add方法的时候会出现元素覆盖的问题。
 ### 1.2.2 数组容量检测的并发问题
+在add方法源码中，我们看到在每次添加元素之前都会有一次数组容量的检测，add中调用此方法的源码如下：
+
+    ensureCapacityInternal(size + 1);
+
+容量检测的相关源码如下：
+
+    private void ensureCapacityInternal(int minCapacity) {
+           if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+               minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);
+           }
+
+           ensureExplicitCapacity(minCapacity);
+       }
+
+    private void ensureExplicitCapacity(int minCapacity) {
+        modCount++;
+
+        // overflow-conscious code
+        if (minCapacity - elementData.length > 0)
+            grow(minCapacity);
+    }
+容量检测的流程图如下所示：
+![]()
+我们以两个线程执行add操作来分析扩充容量可能会出现的并发问题：
+当我们新建一个ArrayList时候，此时内部数组容器的容量为默认容量10，当我们用两个线程同时添加第10个元素的时候，如果出现以下执行顺序，可能会抛出java.lang.ArrayIndexOutOfBoundsException异常。
+![]()
+第二个线程往数组中添加数据的时候由于数组容量为10，而此操作往index为10的位置设置元素值，因此会抛出数组越界异常。
