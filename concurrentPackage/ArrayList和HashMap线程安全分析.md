@@ -54,7 +54,7 @@ ArrayList内部是使用数组保存元素的，数据定义如下：
             System.out.println("list size is :" + list.size());
         }
 当执行此main方法后，输出如下：
-![](https://github.com/VitasYuan/Blog/blob/master/pictures/concurrent1-5.png)
+![](https://github.com/VitasYuan/Blog/blob/master/pictures/concurrent-1-5.png)
 从以上执行结果来看，最后输出的结果会小于我们的期望值。即当多线程调用add方法的时候会出现元素覆盖的问题。
 ### 1.2.2 数组容量检测的并发问题
 在add方法源码中，我们看到在每次添加元素之前都会有一次数组容量的检测，add中调用此方法的源码如下：
