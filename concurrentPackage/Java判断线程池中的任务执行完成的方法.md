@@ -120,4 +120,5 @@ ExecutorService中的submit接口说明如下：
     boolean isDone();
     //获取线程返回值
     V get() throws InterruptedException, ExecutionException;
+
 其中我们用到的是isDone方法来判断线程是否执行完。
